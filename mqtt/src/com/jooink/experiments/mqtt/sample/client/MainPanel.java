@@ -1,5 +1,7 @@
 package com.jooink.experiments.mqtt.sample.client;
 
+import java.util.Random;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -16,7 +18,7 @@ public class MainPanel extends Composite {
 	public interface Presenter {
 
 		void connect(String hostname, int port, String clientId,
-				String username, String password);
+				String username, String password, int keepAlive);
 		
 	}
 	
@@ -32,6 +34,18 @@ public class MainPanel extends Composite {
 
 	public MainPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		
+		//generate a random clientid for testing purposes
+		StringBuilder sb = new StringBuilder();
+		Random random = new Random();
+
+		for (int i=0;i<5;i++) {
+		    sb.append('a'+random.nextInt(26));
+		}
+		String code = sb.toString();
+		clientId.setValue(code);
+		
 	}
 
 	@UiField
@@ -48,12 +62,15 @@ public class MainPanel extends Composite {
 	@UiField
 	HasValue<String> password;
 
+	@UiField 
+	HasValue<Integer> keepAlive;
+	
 	@UiField
 	HasClickHandlers createServerTrigger;
 	
 	@UiHandler("createServerTrigger")
 	void onClick(ClickEvent e) {
-		presenter.connect(hostname.getValue(), port.getValue(), clientId.getValue(), username.getValue(), password.getValue());
+		presenter.connect(hostname.getValue(), port.getValue(), clientId.getValue(), username.getValue(), password.getValue(), keepAlive.getValue());
 	}
 
 

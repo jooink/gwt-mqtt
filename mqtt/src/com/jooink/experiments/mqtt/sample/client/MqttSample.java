@@ -74,7 +74,7 @@ public class MqttSample implements EntryPoint, MainPanel.Presenter, Handler {
 
 
 	@Override
-	public void connect(final String hostname, int port, String clientId, String username, String password) {
+	public void connect(final String hostname, int port, String clientId, String username, String password, int keepalive) {
 
 		//using the FAKE Client
 		//final Client client = new Client(MQTTUtils.createFAKEClient(hostname, port, clientId));
@@ -83,14 +83,14 @@ public class MqttSample implements EntryPoint, MainPanel.Presenter, Handler {
 
 		//create the header (part of this view, not the connextion presenter)
 		final ResizeLayoutPanel holder = new ResizeLayoutPanel();
-		final HeaderWidget headerWidget = new HeaderWidget("ws://" + hostname + (80==port?"":port) + " " + clientId);
+		final HeaderWidget4Tab headerWidget = new HeaderWidget4Tab("ws://" + hostname + (80==port?"":port) + " " + clientId);
 
 
 		final ConnectionPresenter serverConnectionPresenter = new ConnectionPresenter(client);
 
 		servers.add(holder, headerWidget);
 
-		headerWidget.setPresenter(new HeaderWidget.Presenter() {
+		headerWidget.setPresenter(new HeaderWidget4Tab.Presenter() {
 			@Override
 			public void close() {
 				serverConnectionPresenter.stop();
@@ -125,10 +125,10 @@ public class MqttSample implements EntryPoint, MainPanel.Presenter, Handler {
 			}
 		};
 
-		if(username != null && username.length()>0)
-			client.connect(ca,username,password);
-		else
-			client.connect(	ca);
+		//if(username != null && username.length()>0)
+			client.connect(ca,username,password, keepalive);
+		//else
+		//	client.connect(	ca);
 
 
 	}

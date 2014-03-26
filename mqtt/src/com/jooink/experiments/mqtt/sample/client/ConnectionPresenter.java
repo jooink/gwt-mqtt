@@ -10,6 +10,7 @@ import com.jooink.experiments.mqtt.Subscription;
 import com.jooink.experiments.mqtt.lowlevel.MessageDeliveredHandler;
 import com.jooink.experiments.mqtt.lowlevel.MqttMessage;
 import com.jooink.experiments.mqtt.lowlevel.SubscriptionHandler;
+import com.jooink.experiments.mqtt.lowlevel.UnsubscriptionHandler;
 
 public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPanel.Presenter, MessageDeliveredHandler {
 
@@ -44,6 +45,7 @@ public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPane
 		subscriptionPanel.setPresenter(this);
 		view.add(subscriptionPanel,new HTML("Subscribe"),25);
 		
+		view.showWidget(subscriptionPanel);
 		
 		//insert the view
 		holder.clear();
@@ -75,7 +77,8 @@ public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPane
 	}
 
 	public void stop() { 
-		//nothing to do XXX (dunno)
+		System.out.println("diconnection");
+		client.disconnect();
 	}
 
 	@Override
@@ -85,17 +88,32 @@ public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPane
 		
 
 		final ResizeLayoutPanel holder = new ResizeLayoutPanel();
-		final HeaderWidget headerWidget = new HeaderWidget(topicStr);
+		final HeaderWidget4Stack headerWidget = new HeaderWidget4Stack(topicStr);
 
 		final Subscription subscription = new Subscription(client, topic);
 		final SubscriptionPresenter topicSubscriptionPresenter = new SubscriptionPresenter(subscription);
 
 		view.add(holder, headerWidget, 25);
 		
-		headerWidget.setPresenter(new HeaderWidget.Presenter() {
+		headerWidget.setPresenter(new HeaderWidget4Stack.Presenter() {
 			@Override
 			public void close() {
+				
 				topicSubscriptionPresenter.stop();
+				subscription.unsubscribe(new UnsubscriptionHandler() {
+					
+					@Override
+					public void onUnsubscriptionSuccess() {
+						System.out.println("Unsubscription Done");
+					}
+					
+					@Override
+					public void onUnsubscriptionFailure(int errorCode, String errorText) {
+						System.err.println("Unsubscription Error");
+					}
+				});
+				
+				
 				view.remove(holder);
 			}
 		});

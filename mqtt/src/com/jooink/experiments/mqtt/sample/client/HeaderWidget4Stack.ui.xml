@@ -23,7 +23,6 @@
 		.close {
 			float: right;
 			margin-right: 10px;
-			margin-left: 10px;
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.main}">
@@ -31,6 +30,6 @@
 	    	<g:HTML ui:field="title" addStyleNames="{style.title}"></g:HTML>
 			<g:Anchor  addStyleNames="{style.close}" ui:field="trigger">close</g:Anchor>
 	  	</div>
-		<g:HTML addStyleNames="{style.status}" ui:field="status"></g:HTML>
+<!-- 		<g:HTML addStyleNames="{style.status}" ui:field="status"></g:HTML> -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

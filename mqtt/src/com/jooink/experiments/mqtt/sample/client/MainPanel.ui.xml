@@ -22,10 +22,15 @@
 		</div>
 
 		<div>
-			<div>client id</div>
-			<g:TextBox ui:field="clientId">gwtMqTT</g:TextBox>
+			<div>Keepalive Interval (seconds)</div>
+			<g:IntegerBox ui:field="keepAlive">60</g:IntegerBox>
 		</div>
-
+		
+		<div>
+			<div>client id</div>
+			<g:TextBox ui:field="clientId"></g:TextBox>
+		</div>
+		
 		<div>
 			<div>Username</div>
 			<g:TextBox ui:field="username"></g:TextBox>

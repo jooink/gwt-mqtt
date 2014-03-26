@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HeaderWidget extends Composite {
+public class HeaderWidget4Stack extends Composite {
 
 	
 	public interface Presenter {
@@ -20,14 +20,14 @@ public class HeaderWidget extends Composite {
 	
 	private static HeaderWidgetUiBinder uiBinder = GWT.create(HeaderWidgetUiBinder.class);
 
-	interface HeaderWidgetUiBinder extends UiBinder<Widget, HeaderWidget> {
+	interface HeaderWidgetUiBinder extends UiBinder<Widget, HeaderWidget4Stack> {
 	}
 
 
 	private Presenter presenter;
 
 	
-	public HeaderWidget(String titlestr) {
+	public HeaderWidget4Stack(String titlestr) {
 		initWidget(uiBinder.createAndBindUi(this));
 		title.setText(titlestr);
 	}
@@ -42,8 +42,8 @@ public class HeaderWidget extends Composite {
 	@UiField
 	HasText title;
 	
-	@UiField
-	HasText status;
+//	@UiField
+//	HasText status;
 
 	@UiHandler("trigger")
 	void onClick(ClickEvent e) {
@@ -55,7 +55,10 @@ public class HeaderWidget extends Composite {
 	}
 
 	public void setStatusText(String string) {
-		status.setText(string);
+		//doing nothing, sorry
+		//XXX
+		
+		//status.setText(string);
 	}
 
 
