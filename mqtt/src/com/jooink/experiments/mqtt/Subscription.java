@@ -15,6 +15,11 @@ public class Subscription {
 
 	private Destination filter;
 	private Client client;
+	
+	public Client getClient() {
+		return client;
+	}
+	
 	public Subscription(Client client,Destination filter) {
 		this.client = client;
 		this.filter = filter;

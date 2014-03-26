@@ -37,7 +37,8 @@ public class Client {
 
 	protected boolean connected;
 	protected boolean connecting;
-
+	protected boolean requestedDisconnection = false;
+	
 	public boolean isConnected() {
 		return connected;
 	}
@@ -96,7 +97,16 @@ public class Client {
 
 		@Override
 		public void onConnectionLost(int code, String msg) {
+			
 			connected = false;
+			
+			//this is a bug: the js calls the handler even when disconnection is requested
+			//this is just a workaround
+			//XXX
+			if(requestedDisconnection) {
+				requestedDisconnection = false;
+				return;
+			}
 			bus.fireEvent(new ConnectionLostEvent(code, msg));
 		}
 	};
@@ -107,15 +117,32 @@ public class Client {
 		client.connect(ConnectOptions.create(new ClientConnectionHandler(handler)));
 	}
 
-	public void connect(ConnectionHandler handler, String userName, String password) {
+	public void connect(ConnectionHandler handler, String userName, String password, int keepalive) {
 		connecting = true;
 		ConnectOptions co = ConnectOptions.create(new ClientConnectionHandler(handler));
-		co.setUsername(userName);
-		co.setPassword(password);
+	
+		if(userName!= null && userName.length()>0)
+			co.setUsername(userName);
+		if(password!= null && password.length()>0)
+			co.setPassword(password);
+		if(keepalive >0)
+			co.setKeepAliveInterval(keepalive);
+		
 		client.connect(co);
 	}
 
 
+	public void disconnect() {
+		
+		if(!connected)
+			return;
+		//XXX
+		//this seems a bug in the js: the context lost handler is called
+		//XXX
+		requestedDisconnection = true;
+		
+		client.disconnect();
+	}
 	
 
 
