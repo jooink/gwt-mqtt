@@ -1,0 +1,49 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style type="com.jooink.experiments.mqtt.sample.client.SendShortPanel.Style">
+
+		.deliveringStyle {
+			background-color: red;
+			opacity: 0.5;
+		}
+		.deliveryPanel {
+			opacity: 1;
+			transition: opacity 10ms;
+			background-color: gray;
+			border-color: darkGray;
+			width: 100%;
+			position: relative;
+		}
+
+		.areacont { 
+			position: absolute;
+			top: 5px;
+			bottom: 5px;
+			left: 5px;
+			right: 120px;
+		}
+
+		.area { 
+			width: 98%;
+			height: 90%;
+			resize: none; 
+		}
+
+
+		.btn { 
+			position: absolute;
+			top: 5px;
+			bottom: 5px;
+			width: 110px;
+			right: 5px;
+		}
+
+	</ui:style>
+	<g:HTMLPanel ui:field="sendPanel" addStyleNames="{style.deliveryPanel}">
+	    <div class="{style.areacont}">
+		<g:TextArea addStyleNames="{style.area}" ui:field="msgSnd">Hi MqTT User</g:TextArea>
+		</div>
+		<g:Button  addStyleNames="{style.btn}" ui:field="sendTrigger">Send</g:Button>
+	</g:HTMLPanel>
+</ui:UiBinder> 
