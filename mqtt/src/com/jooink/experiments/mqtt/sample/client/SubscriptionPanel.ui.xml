@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style type="com.jooink.experiments.mqtt.sample.client.SubscriptionPanel.Style">
+		
+		.subscribingStyle {
+			background-color: red;
+			opacity: 0.5;
+		}
+		.subscribePanel {
+			opacity: 1;
+			transition: opacity 10ms;
+		}
+	</ui:style>
+	<g:HTMLPanel ui:field="subscribePanel" addStyleNames="{style.subscribePanel}">
+
+		<div>
+			<div>Topic</div>
+			<g:TextBox ui:field="topic">$SYS/#</g:TextBox>
+		</div>
+
+		<g:Button ui:field="subscribeTrigger">Subscribe</g:Button>
+
+	</g:HTMLPanel>
+
+
+</ui:UiBinder> 
