@@ -10,6 +10,7 @@ import com.jooink.experiments.mqtt.MessageArrivedEvent;
 import com.jooink.experiments.mqtt.Subscription;
 import com.jooink.experiments.mqtt.lowlevel.MessageDeliveredHandler;
 import com.jooink.experiments.mqtt.lowlevel.MqttMessage;
+import com.jooink.experiments.mqtt.lowlevel.SubscriptionHandler;
 import com.jooink.experiments.mqtt.lowlevel.UnsubscriptionHandler;
 
 public class SubscriptionPresenter implements UnsubscriptionHandler, SendShortPanel.Presenter, MessageDeliveredHandler {
@@ -32,11 +33,10 @@ public class SubscriptionPresenter implements UnsubscriptionHandler, SendShortPa
 	SendShortPanel shortSend;
 	
 	
-	public void go(HasWidgets.ForIsWidget holder) {
+	public void go(final HasWidgets.ForIsWidget holder, final SubscriptionHandler h) {
 
-
-		final LayoutPanel outer = new LayoutPanel();
 		final FlowPanel view = new FlowPanel();
+
 		subscription.addMessageArrivedHandler(new MessageArrivedEvent.Handler() {
 
 			@Override
@@ -49,6 +49,30 @@ public class SubscriptionPresenter implements UnsubscriptionHandler, SendShortPa
 			}
 		});
 
+		//we call here subscribe so we can listen for RETAINED MESSAGES
+		subscription.subscribe( new SubscriptionHandler() {
+
+			@Override
+			public void onSubscriptionSuccess() {
+				h.onSubscriptionSuccess();
+				proceed(holder, view);
+			}
+
+			@Override
+			public void onSubscriptionFailure(int errorCode, String errorText) {
+				h.onSubscriptionFailure(errorCode, errorText);
+				
+			}
+			
+		});
+
+	
+
+	}
+
+	private void proceed( HasWidgets.ForIsWidget holder, FlowPanel view) {
+		final LayoutPanel outer = new LayoutPanel();
+
 		holder.clear();
 		outer.add(new CustomScrollPanel(view));
 		if(! subscription.getFilter().isWildcard() ) {
@@ -57,9 +81,9 @@ public class SubscriptionPresenter implements UnsubscriptionHandler, SendShortPa
 			outer.add(shortSend);
 			outer.setWidgetBottomHeight(shortSend, 0, Unit.PX, 100, Unit.PX);
 		}
-		holder.add(outer);	
+		holder.add(outer);		
 	}
-
+	
 	@Override
 	public void onUnsubscriptionSuccess() {
 		System.out.println("unSubscription Success");

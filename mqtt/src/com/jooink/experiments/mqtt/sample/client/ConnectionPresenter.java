@@ -124,18 +124,21 @@ public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPane
 		
 		headerWidget.setStatusText("subscribing");
 		subscriptionPanel.setSubscribing(true);
-		//want to be informed about the connection status 
-		subscription.subscribe( new SubscriptionHandler() {
 
+		
+		//Retained Messages will arrive immediately so we MUST
+		//add the message handler BEFORE calling subscribe 
+		//KLUGE: we pass the SubscriptionHandler handler that
+		//must have access to headerWidget to the topicSubscriptionPresenter
+		//where the message handler can be inserted
+		
+		//want to be informed about the connection status 
+		SubscriptionHandler sh = new SubscriptionHandler() {
 			@Override
 			public void onSubscriptionSuccess() {		
 				//update the header status
 				headerWidget.setStatusText("subscribed");
 				subscriptionPanel.setSubscribing(false);
-
-				//can go ... it is subscribed
-				topicSubscriptionPresenter.go(holder);		
-
 			}
 
 			@Override
@@ -143,7 +146,10 @@ public class ConnectionPresenter implements SubscriptionPanel.Presenter,SendPane
 				//update the header status
 				headerWidget.setStatusText("ERROR " + erroCode + ": " + errorText);  
 			}
-		});
+		};
+		
+		topicSubscriptionPresenter.go(holder, sh);		
+
 
 		
 		
