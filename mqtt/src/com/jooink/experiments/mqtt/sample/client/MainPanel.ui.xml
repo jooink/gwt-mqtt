@@ -18,7 +18,7 @@
 
 		<div>
 			<div>Server Port</div>
-			<g:IntegerBox ui:field="port">80</g:IntegerBox>
+			<g:IntegerBox ui:field="port">8080</g:IntegerBox>
 		</div>
 
 		<div>
