@@ -7,11 +7,11 @@ public final class MqttMessage extends JavaScriptObject {
 	protected MqttMessage() {}
 	
 	public static native MqttMessage create(String stringPayload) /*-{
-		return new Messaging.Message(stringPayload);
+		return new Paho.MQTT.Message(stringPayload);
 	}-*/;
 	
 	public static native MqttMessage create(ArrayBuffer arrayPayload) /*-{
-		return new Messaging.Message(arrayPayload);
+		return new Paho.MQTT.Message(arrayPayload);
 	}-*/;
 
 	public native String getPayloadString() /*-{

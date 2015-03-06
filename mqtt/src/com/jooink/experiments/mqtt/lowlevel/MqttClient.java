@@ -43,7 +43,7 @@ public final class MqttClient extends JavaScriptObject implements IMqttClient  {
 
 
 	private static native MqttClient _createClient(String server, int port, String clientId) /*-{
-		return new Messaging.Client(server, port, clientId);
+		return new Paho.MQTT.Client(server, port, clientId);
 	}-*/;
 
 
