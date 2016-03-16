@@ -117,7 +117,7 @@ public class Client {
 		client.connect(ConnectOptions.create(new ClientConnectionHandler(handler)));
 	}
 
-	public void connect(ConnectionHandler handler, String userName, String password, int keepalive) {
+	public void connect(ConnectionHandler handler, String userName, String password, int keepalive, MqttMessage testament) {
 		connecting = true;
 		ConnectOptions co = ConnectOptions.create(new ClientConnectionHandler(handler));
 	
@@ -127,10 +127,16 @@ public class Client {
 			co.setPassword(password);
 		if(keepalive >0)
 			co.setKeepAliveInterval(keepalive);
+		if(testament!= null)	
+			co.setWillMessage(testament);
 		
 		client.connect(co);
 	}
-
+	
+	public void connect(ConnectionHandler handler, String userName, String password, int keepalive) {
+		//backward compatability
+		this.connect(handler, userName, password, keepalive, null);
+	}
 
 	public void disconnect() {
 		
